@@ -1,38 +1,63 @@
 const express = require("express");
 const app = express();
+const connectDB =require("./config/database"); 
+const user =require("./models/user");
+//const {adminAuth} = require("./middlewares/auth");
+//app.use("/admin",adminAuth);
 
-app.use("/support",(req,res)=>{
-    res.send("hell bro");
+//app.get("/getuserData", (req, res) => {
+  //  throw new Error("dvchsh");
+    //res.send("Here is the protected data for admin.");    
+//});
+
+//app.use("/", (err,req, res,next) => {
+    //if(err){
+    //    res.status(400).send("Something went !");
+   // }
+
+//});
+//app.get("/getuserData", (req, res) => {
+   // try{
+    //    throw new Error("dvchsh");
+      //  res.send("Here is the protected data for admin."); 
+    //}catch(err){
+     //   res.status(500).send("Something went wrong!");
+    //}
+       
+//});
+
+
+
+//creating apii
+
+
+
+app.post("/signup",async(req,res)=>{
+    const newUser=new user({
+        firstName:"Ashutosh",
+        lastName:"Droni",
+        email:"droniashutosh2@gmail.com",
+        password:"ashu1234"
+    });
+    await newUser.save();
+    res.send("User signed up successfully");
 });
 
-app.get("/home",(req,res)=>{
-    res.send({firstname:"John",lastname:"pagla"});
-});
-app.get("/ab\\+c",(req,res)=>{
-    res.send({firstname:"John",lastname:"kumar"});
-});
-app.get("/ab\\?c",(req,res)=>{
-    res.send({firstname:"John",lastname:"singh"});
-});
-app.get("/ab\\*cd",(req,res)=>{
-    res.send({firstname:"John",lastname:"namaste"});
-});
-app.get("/a\\(bc\\)\\?d",(req,res)=>{
-    res.send({firstname:"John",lastname:"bhai"});
-});
 
 
 
-app.post("/test",(req,res)=>{
-    res.send("Hello test");
-});
-app.delete("/",(req,res)=>{
-    res.send("deleted all files");
-});
-app.use((req, res) => {
-  res.status(404).send({ error: "Route not found" });
+
+
+
+
+
+connectDB()
+.then(()=>{
+    console.log("Database connected successfully");
+    app.listen(3000, () => {
+        console.log("Server is running on port 3000");
 });
 
-app.listen(3000,()=>{
-    console.log("Server is running on port 3000");
-});
+}).catch((err)=>{
+    console.log("Database connection failed",err);
+});  
